@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
-
 import os
 from imbox import Imbox # pip install imbox
 import traceback
 import pprint as pp
 import numpy as np
 import pandas as pd
+import configparser
 from datetime import date
 pd.options.mode.chained_assignment = None  # default='warn'
+from oauth2client.service_account import ServiceAccountCredentials
+import pygsheets
 
 # enable less secure apps on your google account
 # https://myaccount.google.com/lesssecureapps
@@ -18,8 +20,16 @@ os.chdir('/Users/garrett/Desktop/codes/CRMEmailAttachmentDownloader')
 
 host = "imap.gmail.com"
 
-username = "garrettscott@mydealerworld.com"
-password = 'Trigger69$$$'
+# Getting credentials from secure ini file
+email_ini_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'GmailLogin.ini')
+print("The email ini path is looking here: " + email_ini_path)
+email_config = configparser.ConfigParser()
+email_config.read(email_ini_path)
+username = email_config['Gmail']['user']
+password = email_config['Gmail']['password']
+
+print('Username is: ',username)
+print('Password is: ',password)
 
 try:
     os.makedirs('retrieved_downloads/vinsolutions')
@@ -169,8 +179,8 @@ shutil.rmtree(download_folder)
 #Raw Imported Types
 #df.dtypes
 #df_showroom.dtypes
-
-
+print("Preparing to create aggregates")
+print(df.info)
 #Fixing types needed for aggregates
 df['Created Date'] = pd.to_datetime(df['Created Date'], errors='coerce')
 df['Completed Date'] = pd.to_datetime(df['Completed Date'], errors='coerce')
