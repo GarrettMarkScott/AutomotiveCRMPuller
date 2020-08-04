@@ -309,26 +309,26 @@ for dealer in dealers:
 
     try: #If there is no google sheet in the dictionary it will not break code
         gsheet = gc.open_by_url(GsheetLookup[dealer])[0]
+
+        #Reads in the data currently on the Gsheet, concates that with the new imported data, then removes duplicates
+        temp = gsheet.get_as_df()
+        temp.drop(columns=['DealerName'], inplace=True)
+        try: #Breaks if there is an empty GSheet
+            temp['Entry Date'] = pd.to_datetime(temp['Entry Date'], errors='coerce')
+        except:
+            pass
+        temp = pd.concat([gds.loc[dealer].reset_index(),temp], ignore_index=False)
+        try:
+            temp.insert(0, 'DealerName', dealer)
+        except:
+            pass
+        check2 = temp
+        temp['DealerName'] = dealer
+
+        temp = temp.drop_duplicates(subset=['DealerName','Entry Date'], keep='first', ignore_index=True).reset_index(drop=True)
+        temp.sort_values('Entry Date', ascending=True, inplace=True)
+
+        gsheet.clear()
+        gsheet.set_dataframe(temp, (1,1))
     except:
         pass
-
-    #Reads in the data currently on the Gsheet, concates that with the new imported data, then removes duplicates
-    temp = gsheet.get_as_df()
-    temp.drop(columns=['DealerName'], inplace=True)
-    try: #Breaks if there is an empty GSheet
-        temp['Entry Date'] = pd.to_datetime(temp['Entry Date'], errors='coerce')
-    except:
-        pass
-    temp = pd.concat([gds.loc[dealer].reset_index(),temp], ignore_index=False)
-    try:
-        temp.insert(0, 'DealerName', dealer)
-    except:
-        pass
-    check2 = temp
-    temp['DealerName'] = dealer
-
-    temp = temp.drop_duplicates(subset=['DealerName','Entry Date'], keep='first', ignore_index=True).reset_index(drop=True)
-    temp.sort_values('Entry Date', ascending=True, inplace=True)
-
-    gsheet.clear()
-    gsheet.set_dataframe(temp, (1,1))
