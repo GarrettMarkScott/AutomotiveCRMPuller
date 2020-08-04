@@ -271,13 +271,15 @@ gds
 # This creates a dictionary of dealers and place holder for their unique GSheet URLs
 GsheetLookup = dict.fromkeys(df.Dealer.unique().tolist(), "Not updated")
 
-# Key Area to do updates when new clients are onboarded. This needs to be
-# manually updated for each client. Each GSheet needs to add
-# pulling-crm-data-to-master-dat@dealer-world-data.iam.gserviceaccount.com
-# with edit permissions
+"""
+Key Area to do updates when new clients are onboarded. This needs to be
+manually updated for each client. Each GSheet needs to add
+pulling-crm-data-to-master-dat@dealer-world-data.iam.gserviceaccount.com
+with edit permissions
+"""
 GsheetLookup['Steven Nissan'] = 'https://docs.google.com/spreadsheets/d/17MJaxHCVI-xq2Gtc-eh0WHWLNcqNfpe9XPxmDt2ywYg'
 GsheetLookup['Steven Kia'] = 'https://docs.google.com/spreadsheets/d/1m_qDa76R2_AXGFRS76UcT98puxnWwhUdRiFF_rZGjcA'
-
+GsheetLookup['Gallagher Buick GMC'] = 'https://docs.google.com/spreadsheets/d/1m40fVBOfzqqHJKK6sNhq8WGGxBdz3-5-apRUAfyWEdQ'
 
 dealers = list(GsheetLookup.keys())
 print("These are the dealers that are being updated: ",dealers)
