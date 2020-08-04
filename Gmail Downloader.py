@@ -234,11 +234,16 @@ df_sold.index.set_names(["Dealer", "Date"], inplace=True)
 df_sold
 
 # This builds a dataFrame of showroom visits by dealer by day
-df_showroom['Test Drive'].replace('N',np.NaN, inplace=True)
-df_showroom_agg = df_showroom.groupby(['Dealer',df_showroom['Visit Start Date'].dt.date]).count()
-df_showroom_agg.index.set_names(["Dealer", "Date"], inplace=True)
-df_showroom_agg.columns = ['Showroom Visit','Test Drive']
-df_showroom_agg.sort_values('Showroom Visit', ascending=False)
+# IF statement makes it so that if this info is not available yet it will skip
+# instead of crashing the script
+if df_showroom['Test Drive'] == True:
+    df_showroom['Test Drive'].replace('N',np.NaN, inplace=True)
+    df_showroom_agg = df_showroom.groupby(['Dealer',df_showroom['Visit Start Date'].dt.date]).count()
+    df_showroom_agg.index.set_names(["Dealer", "Date"], inplace=True)
+    df_showroom_agg.columns = ['Showroom Visit','Test Drive']
+    df_showroom_agg.sort_values('Showroom Visit', ascending=False)
+elif:
+    df_showroom = pd.DataFrame()
 
 
 # Merges the aggregated dataFrames above into one filal dataFrame
@@ -301,7 +306,11 @@ for dealer in dealers:
     # NOTE that the worksheet tab HAS to be a an interger,
     # it can not be a string such as "Dealer Leads" make sure that it is
     # the FIRST tab of the worksheek.
-    gsheet = gc.open_by_url(GsheetLookup[dealer])[0]
+
+    try: #If there is no google sheet in the dictionary it will not break code
+        gsheet = gc.open_by_url(GsheetLookup[dealer])[0]
+    except:
+        pass
 
     #Reads in the data currently on the Gsheet, concates that with the new imported data, then removes duplicates
     temp = gsheet.get_as_df()
