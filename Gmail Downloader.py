@@ -15,7 +15,7 @@ import pygsheets
 # enable less secure apps on your google account
 # https://myaccount.google.com/lesssecureapps
 
-os.chdir('/Users/garrett/Desktop/codes/CRMEmailAttachmentDownloader')
+#os.chdir('/Users/garrett/Desktop/codes/CRMEmailAttachmentDownloader')
 
 
 host = "imap.gmail.com"
@@ -32,12 +32,12 @@ print('Username is: ',username)
 print('Password is: ',password)
 
 try:
-    os.makedirs('retrieved_downloads/vinsolutions')
+    os.makedirs(os.path.join('retrieved_downloads','vinsolutions'))
 except:
     pass
 
 primary_working_directory = os.getcwd()
-download_folder = os.getcwd()+'/retrieved_downloads/vinsolutions'
+download_folder = os.path.join(os.getcwd(),'retrieved_downloads','vinsolutions')
 
 if not os.path.isdir(download_folder):
     os.makedirs(download_folder, exist_ok=True)
