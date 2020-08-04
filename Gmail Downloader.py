@@ -15,7 +15,9 @@ import pygsheets
 # enable less secure apps on your google account
 # https://myaccount.google.com/lesssecureapps
 
-#os.chdir('/Users/garrett/Desktop/codes/CRMEmailAttachmentDownloader')
+# This is serving as a catch all to put the code outputs in the right primary_working_directory
+# when a cron job is called
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 
 host = "imap.gmail.com"
@@ -38,10 +40,10 @@ except:
 
 primary_working_directory = os.path.dirname(os.path.realpath(__file__))
 download_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)),'retrieved_downloads','vinsolutions')
+print('Download forlder is: ',download_folder)
 
 if not os.path.isdir(download_folder):
     os.makedirs(download_folder, exist_ok=True)
-
 #Builds list of day params as integers to match imbox's weird snytax
 today = date.today().strftime('%Y,%m,%d').split(',')
 today = [ int(x) for x in today ]
