@@ -36,8 +36,8 @@ try:
 except:
     pass
 
-primary_working_directory = os.getcwd()
-download_folder = os.path.join(os.getcwd(),'retrieved_downloads','vinsolutions')
+primary_working_directory = os.path.dirname(os.path.realpath(__file__))
+download_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)),'retrieved_downloads','vinsolutions')
 
 if not os.path.isdir(download_folder):
     os.makedirs(download_folder, exist_ok=True)
