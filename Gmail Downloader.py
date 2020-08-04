@@ -236,12 +236,15 @@ df_sold
 # This builds a dataFrame of showroom visits by dealer by day
 # IF statement makes it so that if this info is not available yet it will skip
 # instead of crashing the script
+<<<<<<< HEAD
 df_showroom['Test Drive'] == True:
 df_showroom['Test Drive'].replace('N',np.NaN, inplace=True)
 df_showroom_agg = df_showroom.groupby(['Dealer',df_showroom['Visit Start Date'].dt.date]).count()
 df_showroom_agg.index.set_names(["Dealer", "Date"], inplace=True)
 df_showroom_agg.columns = ['Showroom Visit','Test Drive']
 df_showroom_agg.sort_values('Showroom Visit', ascending=False)
+=======
+>>>>>>> d0cc15dc4f899a71a6ea746440e38ca890f9c99e
 
 
 
