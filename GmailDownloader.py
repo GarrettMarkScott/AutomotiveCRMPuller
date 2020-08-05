@@ -238,14 +238,13 @@ df_sold
 # This builds a dataFrame of showroom visits by dealer by day
 # IF statement makes it so that if this info is not available yet it will skip
 # instead of crashing the script
-
 df_showroom['Test Drive'] == True
 df_showroom['Test Drive'].replace('N',np.NaN, inplace=True)
+df_showroom_agg = df_showroom[['Test Drive','Dealer','Visit Start Date']]
 df_showroom_agg = df_showroom.groupby(['Dealer',df_showroom['Visit Start Date'].dt.date]).count()
 df_showroom_agg.index.set_names(["Dealer", "Date"], inplace=True)
 df_showroom_agg.columns = ['Showroom Visit','Test Drive']
 df_showroom_agg.sort_values('Showroom Visit', ascending=False)
-
 
 
 # Merges the aggregated dataFrames above into one filal dataFrame
@@ -282,6 +281,9 @@ with edit permissions
 GsheetLookup['Steven Nissan'] = 'https://docs.google.com/spreadsheets/d/17MJaxHCVI-xq2Gtc-eh0WHWLNcqNfpe9XPxmDt2ywYg'
 GsheetLookup['Steven Kia'] = 'https://docs.google.com/spreadsheets/d/1m_qDa76R2_AXGFRS76UcT98puxnWwhUdRiFF_rZGjcA'
 GsheetLookup['Gallagher Buick GMC'] = 'https://docs.google.com/spreadsheets/d/1m40fVBOfzqqHJKK6sNhq8WGGxBdz3-5-apRUAfyWEdQ'
+GsheetLookup['Hawkinson Kia'] = 'https://docs.google.com/spreadsheets/d/1EDl6blIaMbNkIm_vDh1fR4PFzxAbtmFx4wLjtTxrcjc'
+GsheetLookup['Hawkinson Nissan'] = 'https://docs.google.com/spreadsheets/d/129L4UgtctUFyT2Y5uJctso2HNs6i75ZuFocNDFiQv3s'
+
 
 dealers = list(GsheetLookup.keys())
 print("These are the dealers that are being updated: ",dealers)
