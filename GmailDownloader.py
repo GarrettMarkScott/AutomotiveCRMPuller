@@ -280,6 +280,7 @@ with edit permissions
 """
 GsheetLookup['Steven Nissan'] = 'https://docs.google.com/spreadsheets/d/17MJaxHCVI-xq2Gtc-eh0WHWLNcqNfpe9XPxmDt2ywYg'
 GsheetLookup['Steven Kia'] = 'https://docs.google.com/spreadsheets/d/1m_qDa76R2_AXGFRS76UcT98puxnWwhUdRiFF_rZGjcA'
+GsheetLookup['Steven Toyota'] = 'https://docs.google.com/spreadsheets/d/16t39Z8jED64TMRpQviN7E2pU2ri1zOVWSrKRspny3x8'
 GsheetLookup['Gallagher Buick GMC'] = 'https://docs.google.com/spreadsheets/d/1m40fVBOfzqqHJKK6sNhq8WGGxBdz3-5-apRUAfyWEdQ'
 GsheetLookup['Hawkinson Kia'] = 'https://docs.google.com/spreadsheets/d/1EDl6blIaMbNkIm_vDh1fR4PFzxAbtmFx4wLjtTxrcjc'
 GsheetLookup['Hawkinson Nissan'] = 'https://docs.google.com/spreadsheets/d/129L4UgtctUFyT2Y5uJctso2HNs6i75ZuFocNDFiQv3s'
