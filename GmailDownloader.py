@@ -283,6 +283,10 @@ GsheetLookup['Steven Kia'] = 'https://docs.google.com/spreadsheets/d/1m_qDa76R2_
 GsheetLookup['Gallagher Buick GMC'] = 'https://docs.google.com/spreadsheets/d/1m40fVBOfzqqHJKK6sNhq8WGGxBdz3-5-apRUAfyWEdQ'
 GsheetLookup['Hawkinson Kia'] = 'https://docs.google.com/spreadsheets/d/1EDl6blIaMbNkIm_vDh1fR4PFzxAbtmFx4wLjtTxrcjc'
 GsheetLookup['Hawkinson Nissan'] = 'https://docs.google.com/spreadsheets/d/129L4UgtctUFyT2Y5uJctso2HNs6i75ZuFocNDFiQv3s'
+GsheetLookup['Charles Gabus Ford'] = 'https://docs.google.com/spreadsheets/d/1WL3iQTwwn0711XHJz_O3Iw1kdcR0v4hFlCWC8tVPadA'
+GsheetLookup['Waldorf Chevy Cadillac'] = 'https://docs.google.com/spreadsheets/d/1f7N53OXve66zJx5pD4XLr9i0F6ofPaCTpn-Xfj4iA0o'
+
+
 
 
 dealers = list(GsheetLookup.keys())
