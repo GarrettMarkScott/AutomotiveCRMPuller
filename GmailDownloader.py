@@ -236,7 +236,7 @@ df_sold = df_sold[['Internet','Phone','Walk-in']]
 df_sold.columns = ['Internet Sold','Phone Sold','Walk-in Sold']
 df_sold.index.set_names(["Dealer", "Date"], inplace=True)
 #df_sold
-time.sleep(5)
+
 
 # This builds a dataFrame of showroom visits by dealer by day
 # IF statement makes it so that if this info is not available yet it will skip
