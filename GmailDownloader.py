@@ -11,6 +11,9 @@ from datetime import date
 pd.options.mode.chained_assignment = None  # default='warn'
 from oauth2client.service_account import ServiceAccountCredentials
 import pygsheets
+import faulthandler; faulthandler.enable() #Can run with python -Xfaulthandler *.py
+
+
 
 # enable less secure apps on your google account
 # https://myaccount.google.com/lesssecureapps
@@ -60,8 +63,7 @@ for (uid, message) in messages:
         try:
             att_fn = attachment.get('filename')
             download_path = f"{download_folder}/BDC_{att_fn}"
-            print(uid)
-            print(download_path)
+            print("Download: ",download_path)
             with open(download_path, "wb") as fp:
                 fp.write(attachment.get('content').read())
         except:
@@ -77,8 +79,7 @@ for (uid, message) in messages:
         try:
             att_fn = attachment.get('filename')
             download_path = f"{download_folder}/Showroom_{att_fn}"
-            print(uid)
-            print(download_path)
+            print("Download: ",download_path)
             with open(download_path, "wb") as fp:
                 fp.write(attachment.get('content').read())
         except:
@@ -138,12 +139,13 @@ messages = mail.messages(folder='Social')
 os.chdir(download_folder)
 # Creates list array of files downloaded
 files = os.listdir(download_folder)
+print()
+print('All Files Downloaded')
 print(files)
+print()
 
 
-for file in files:
-    ftype = file.split("_")[0]
-    print(ftype)
+
 
 
 #Build Master DataFrame of all imported data
@@ -182,14 +184,14 @@ shutil.rmtree(download_folder)
 #df.dtypes
 #df_showroom.dtypes
 print("Preparing to create aggregates")
-print(df.info)
+print()
 #Fixing types needed for aggregates
 df['Created Date'] = pd.to_datetime(df['Created Date'], errors='coerce')
 df['Completed Date'] = pd.to_datetime(df['Completed Date'], errors='coerce')
 df['Sold Date'] = pd.to_datetime(df['Sold Date'], errors='coerce')
 # Notice that the original imported blanks were in fact '/xa0' values and had to be replaced.
 df['Adjusted Response Time (Min)'] = df['Adjusted Response Time (Min)'].replace(u'\xa0', np.NaN)
-df.dtypes
+#df.dtypes
 
 
 
@@ -197,7 +199,7 @@ df.dtypes
 df_response = df.groupby(['Dealer',df['Lead Origination Date'].dt.date]).mean()
 df_response = df_response[['Adjusted Response Time (Min)']]
 df_response.index.set_names(["Dealer", "Date"], inplace=True)
-df_response
+#df_response
 
 
 # This builds a dataFrame of leads by dealer by day
@@ -206,7 +208,7 @@ df_leads = df_leads['Lead ID'] #Used to reduce DF
 df_leads = df_leads[['Internet','Phone','Walk-in']]
 df_leads.columns = ['Internet Leads','Phone Leads','Walk-in Leads']
 df_leads.index.set_names(["Dealer", "Date"], inplace=True)
-df_leads
+#df_leads
 
 
 # This builds a dataFrame of appointments set by dealer by day
@@ -215,7 +217,7 @@ df_appointment_set = df_appointment_set['Lead ID'] #Used to reduce DF
 df_appointment_set = df_appointment_set[['Internet','Phone','Walk-in']]
 df_appointment_set.columns = ['Internet Set','Phone Set','Walk-in Set']
 df_appointment_set.index.set_names(["Dealer", "Date"], inplace=True)
-df_appointment_set
+#df_appointment_set
 
 
 # This builds a dataFrame of appointments show by dealer by day
@@ -224,7 +226,7 @@ df_appointment_show = df_appointment_show['Lead ID'] #Used to reduce DF
 df_appointment_show = df_appointment_show[['Internet','Phone','Walk-in']]
 df_appointment_show.columns = ['Internet Show','Phone Show','Walk-in Show']
 df_appointment_show.index.set_names(["Dealer", "Date"], inplace=True)
-df_appointment_show
+#df_appointment_show
 
 
 # This builds a dataFrame of units sold by dealer by day
@@ -233,7 +235,8 @@ df_sold = df_sold['Lead ID'] #Used to reduce DF
 df_sold = df_sold[['Internet','Phone','Walk-in']]
 df_sold.columns = ['Internet Sold','Phone Sold','Walk-in Sold']
 df_sold.index.set_names(["Dealer", "Date"], inplace=True)
-df_sold
+#df_sold
+time.sleep(5)
 
 # This builds a dataFrame of showroom visits by dealer by day
 # IF statement makes it so that if this info is not available yet it will skip
@@ -252,7 +255,7 @@ final = pd.DataFrame().join([df_leads,df_appointment_set,df_appointment_show,df_
 final.drop_duplicates(inplace=True)
 final.fillna(0, inplace=True)
 final['Total Sold'] = final['Internet Sold']+final['Phone Sold']+final['Walk-in Sold']
-final
+#final
 
 
 # Copies final dataFrame for Google Data Studio format
@@ -264,7 +267,7 @@ gds.columns = ['Internet Leads','Phone Leads','Fresh Walk Ins','Internet Set','P
 gds.drop(columns=['Test Drive','Walk Ins Set','Walk Ins Show','Walk Ins Sold'], inplace=True)
 gds['Closing Percent'] = gds['Units Sold']/gds['Showroom Visits']
 gds[['Avg. Response Time','Closing Percent']] = gds[['Avg. Response Time','Closing Percent']].replace(np.inf, "")
-gds
+#gds
 
 
 #os.getcwd()
@@ -280,19 +283,22 @@ with edit permissions
 """
 GsheetLookup['Steven Nissan'] = 'https://docs.google.com/spreadsheets/d/17MJaxHCVI-xq2Gtc-eh0WHWLNcqNfpe9XPxmDt2ywYg'
 GsheetLookup['Steven Kia'] = 'https://docs.google.com/spreadsheets/d/1m_qDa76R2_AXGFRS76UcT98puxnWwhUdRiFF_rZGjcA'
-GsheetLookup['Steven Toyota'] = 'https://docs.google.com/spreadsheets/d/16t39Z8jED64TMRpQviN7E2pU2ri1zOVWSrKRspny3x8'
+GsheetLookup['Steven Toyota '] = 'https://docs.google.com/spreadsheets/d/16t39Z8jED64TMRpQviN7E2pU2ri1zOVWSrKRspny3x8'
 GsheetLookup['Gallagher Buick GMC'] = 'https://docs.google.com/spreadsheets/d/1m40fVBOfzqqHJKK6sNhq8WGGxBdz3-5-apRUAfyWEdQ'
 GsheetLookup['Hawkinson Kia'] = 'https://docs.google.com/spreadsheets/d/1EDl6blIaMbNkIm_vDh1fR4PFzxAbtmFx4wLjtTxrcjc'
 GsheetLookup['Hawkinson Nissan'] = 'https://docs.google.com/spreadsheets/d/129L4UgtctUFyT2Y5uJctso2HNs6i75ZuFocNDFiQv3s'
 GsheetLookup['Charles Gabus Ford'] = 'https://docs.google.com/spreadsheets/d/1WL3iQTwwn0711XHJz_O3Iw1kdcR0v4hFlCWC8tVPadA'
 GsheetLookup['Waldorf Chevy Cadillac'] = 'https://docs.google.com/spreadsheets/d/1f7N53OXve66zJx5pD4XLr9i0F6ofPaCTpn-Xfj4iA0o'
 
-
-
+print("This is the dictionary being used for Gsheet Matches:")
+print(GsheetLookup)
+print()
 
 dealers = list(GsheetLookup.keys())
-print("These are the dealers that are being updated: ",dealers)
-
+print("These are the dealers that are being updated: ")
+for dealer in dealers:
+    print(dealer)
+print()
 
 ##################### Section that Updates the GSheets #########################
 scope = ['https://spreadsheets.google.com/feeds',
@@ -312,7 +318,6 @@ gc = pygsheets.authorize(service_file=google_api)
 
 #dealer = 'Steven Nissan'
 for dealer in dealers:
-    print(dealer)
     #open the google spreadsheet, [0] selects first sheet
     # NOTE that the worksheet tab HAS to be a an interger,
     # it can not be a string such as "Dealer Leads" make sure that it is
@@ -341,5 +346,7 @@ for dealer in dealers:
 
         gsheet.clear()
         gsheet.set_dataframe(temp, (1,1))
+        print(dealer,": Success")
     except:
         pass
+        print(dealer,": FAILED")
